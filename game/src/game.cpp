@@ -82,7 +82,7 @@ void game::ScanOffset()
 	printf("0x%-12X Actors Call\n", levelcalloffset);
 	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b ? ? ? ? ?") + 3);
 	printf("0x%-12X Level\n", g_offset_level);
-	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b ? ? ? ? ? 48") + 3);
+	g_offset_actors = *(unsigned char*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 45 ? 48") + 3);
 	printf("0x%-12X Actors\n", g_offset_actors);
 
 
@@ -91,7 +91,7 @@ void game::ScanOffset()
 	unsigned int localcalloffset = (unsigned int)(localcall + *(unsigned long*)(dump + localcall + 1) + 5);
 	printf("0x%-12X Local Call\n", localcalloffset);
 	printf("0x%-12X Controller Call\n", localcalloffset);
-	g_offset_local = *(unsigned int*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 100, "48 8B 99 ? ? ? ?") + 3);
+	g_offset_local = *(unsigned char*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 100, "48 8B 59 ?") + 3);
 	printf("0x%-12X Local\n", g_offset_local);
 	g_offset_controler = *(unsigned char*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 300, "48 8b ? ? 4d") + 3);
 	printf("0x%-12X Controller\n", g_offset_controler);
@@ -140,7 +140,7 @@ void game::ScanOffset()
 	printf("0x%-12X GroggyHealth\n", g_offset_groggyhealth);
 
 	// DroppedItemArray
-	unsigned long long droppeditemsprefix = FindPattern(dump, imagesize, "44 0F B6 81 ? ? ? ? 41 0F B6 C0 24 01 3A C2 74 13 41 80 E0 FE 44 0A C2 44 88 81 ? ? ? ? E9 ? ? ? ?", 2);
+	unsigned long long droppeditemsprefix = FindPattern(dump, imagesize, "44 0F B6 81 ? ? ? ? 41 0F B6 C0 24 01 3A C2 74 13 41 80 E0 FE 44 0A C2 44 88 81 ? ? ? ? E9 ? ? ? ?");
 	unsigned long long droppeditemsaddr = droppeditemsprefix + FindPattern(dump + droppeditemsprefix, 100, "E9 ? ? ? ?");
 	unsigned int droppeditemscall = (unsigned int)(*(unsigned int*)(dump + droppeditemsaddr + 1) + droppeditemsaddr + 5);
 	g_offset_droppeditems = *(unsigned int*)(dump + droppeditemscall + FindPattern(dump + droppeditemscall, 200, "4c 8d ? ? ? ? ? c7 45 d7") + 3);

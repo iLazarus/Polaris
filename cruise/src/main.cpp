@@ -10,7 +10,7 @@ int main()
 	unsigned long long base = drv->GetGameModule();
 	printf("0x%-12IX GameBase\n", base);
 	unsigned long imageSize = drv->GetImageSize();
-	printf("0x%-12IX ImageSize\n", base);
+	printf("0x%-12IX ImageSize\n", imageSize);
 	unsigned char *dump = 0;
 	dump = (unsigned char*)malloc(imageSize);
 	drv->RPM(base, dump, imageSize);
