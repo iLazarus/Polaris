@@ -2,8 +2,8 @@
 Game Hack for PUBG
 
 
-asmdecrypt VS Project µ÷ÓÃASM
-driver Çı¶¯²Ù×÷lib
+asmdecrypt VS Project è°ƒç”¨ASM
+driver é©±åŠ¨æ“ä½œ
 graphics DX9
 pattern AoB Scan
-libgo Ğ­³Ì¿â
+libgo åç¨‹åº“
