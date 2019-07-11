@@ -16,6 +16,7 @@ int main()
 	drv->RPM(base, dump, imageSize);
 	unsigned long long *strings = 0;
 	strings = (unsigned long long*)malloc(0x102400);
+	if (!strings) throw "variable initialization memory failed in function [main]";
 	unsigned long long size = FindPattern(dump, imageSize, "48 8D 15 ? ? ? ?", strings);
 	printf("[!] Total fount count %Id\n", size);
 
@@ -62,8 +63,10 @@ int main()
 			}
 		}
 	}
-	delete strings;
-	delete dump;
+	free(strings);
+	strings = 0;
+	free(dump);
+	dump = 0;
 	delete drv;
 
 

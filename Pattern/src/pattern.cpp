@@ -96,10 +96,11 @@ long long FindPattern(unsigned char *data, int searchLength, const char *signatu
 	int ret = 0;
 	unsigned char *sig = 0;
 	sig = (unsigned char *)malloc(1024);
+	if (!sig) throw "variable initialization memory failed in function [FindPattern]";
 	int signatureLength = FormatPattern(signature, sig) + 1;
 	if (!signatureLength) {
 		free(sig);
-		sig = 0;
+		sig = nullptr;
 		return ret;
 	}
 	unsigned char *headerCursor = data;
@@ -136,7 +137,7 @@ long long FindPattern(unsigned char *data, int searchLength, const char *signatu
 	}
 
 	free(sig);
-	sig = 0;
+	sig = nullptr;
 	return ret;
 }
 
@@ -151,6 +152,7 @@ unsigned long long FindPattern(unsigned char *data, int searchLength, const char
 	unsigned long long ret = 0;
 	unsigned char *sig = 0;
 	sig = (unsigned char *)malloc(1024);
+	if (!sig) throw "variable initialization memory failed in function [FindPattern]";
 	int signatureLength = FormatPattern(signature, sig) + 1;
 	if (!signatureLength) {
 		free(sig);

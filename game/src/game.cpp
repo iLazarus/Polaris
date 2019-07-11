@@ -31,17 +31,19 @@ void game::ScanOffset()
 	// dump
 	unsigned char *dump;
 	dump = (unsigned char*)malloc(imagesize);
+	if (!dump) throw "variable initialization memory failed in function [ScanOffset]";
 	drv->RPM(base, dump, imagesize);
-
 	// uworld
 	unsigned long long *result;
 	result = (unsigned long long*)calloc(0x1FFFF, sizeof(unsigned long long));
+	if (!result)  throw "variable initialization memory failed in function [ScanOffset]";
 	long long count = FindPattern(dump, imagesize, "48 8D 15 ? ? ? ?", result);
 	printf("[!] Total Fount Count %Id\n", count);
 	for (int i = 0; i < count; i++)
 	{
 		if (*(unsigned int*)(dump + result[i] + 3) > 0x0f000000) continue;
 		char name[512];
+		name[0] = '\0';
 		memcpy(name, (dump + result[i] + (*(unsigned int*)(dump + result[i] + 3)) + 7), 512);
 		if (!wcsicmp((wchar_t *)name, L"BRO.ClearIDCLevel"))
 		{
@@ -260,7 +262,7 @@ bool cmp(const pair<unsigned long long, float>& a, const pair<unsigned long long
 void game::FilterActors()
 {
 
-	if (autobot) dx->DrawString(false, WIDTH / 2 - FONT_SIZE / 2, HEIGHT / 2 - FONT_SIZE / 2, GREEN, "⊙");
+	if (autobot) dx->DrawString(false, (float)(WIDTH / 2.0 - FONT_SIZE / 2.0), (float)(HEIGHT / 2.0 - FONT_SIZE / 2.0), GREEN, "⊙");
 	if (espitem) dx->DrawString(false, 5, 50, RED, "物品");
 	if (espvehical) dx->DrawString(false, 45, 50, RED, "车辆");
 
@@ -275,7 +277,7 @@ void game::FilterActors()
 
 	for (int i = 0; i < entitycount; i++)
 	{
-		unsigned long long actor = drv->RPM<unsigned long long>(actors + i * 8);
+		unsigned long long actor = drv->RPM<unsigned long long>(actors + (unsigned long long)i * 8);
 		if (!actor || actor == g_DefaultPawn) continue;
 
 		int id = decrypt_objectid(drv->RPM<unsigned long long>(actor + g_offset_id));
@@ -312,7 +314,7 @@ void game::FilterActors()
 
 					if (canVisual && distance < 800)
 					{
-						float toCenterDistance = pow(actorScreen.x - WIDTH / 2.0, 2) + pow(actorScreen.y - HEIGHT / 2.0, 2);
+						float toCenterDistance = (float)(pow(actorScreen.x - WIDTH / 2.0, 2) + pow(actorScreen.y - HEIGHT / 2.0, 2));
 						if (toCenterDistance < AIMLIMITEDSIZE) AimMap.insert_or_assign(actor, toCenterDistance);						
 					}
 
@@ -495,7 +497,7 @@ void game::Fire()
 	float speed = 800.0f;
 	if (CurrentWeaponIndex >= 0 && CurrentWeaponIndex < 3)
 	{
-		unsigned long long pWeapon = drv->RPM<unsigned long long>(EquippedWeapons + CurrentWeaponIndex * 8);
+		unsigned long long pWeapon = drv->RPM<unsigned long long>(EquippedWeapons + (unsigned long long)CurrentWeaponIndex * 8);
 		if (pWeapon)
 		{
 			unsigned long long pData = drv->RPM<unsigned long long>(pWeapon + WEAPONTRAJECTORYDATA);

@@ -71,6 +71,9 @@ private:
 
 		Vector3()
 		{
+			x = 0;
+			y = 0;
+			z = 0;
 		}
 
 		Vector3(float _x, float _y, float _z)
@@ -279,16 +282,14 @@ private:
 		char pad2[0x4];
 		Vector3 Location;
 		char pad1[0x4];
-		FRotator Rotation;
-		
-		
+		FRotator Rotation;		
 	};
 
 	struct FCameraCacheEntry
 	{
 	public:
 		char pad[0x10];
-		struct FMinimalViewInfo  POV;
+		struct FMinimalViewInfo POV;
 	};
 
 	string GetGNameById(unsigned long long ID)
@@ -297,11 +298,13 @@ private:
 		unsigned long long fNamePtr = drv->RPM<unsigned long long>(g_GNames + unsigned long long(ID / g_Chunksize) * 8);
 		unsigned long long fName = drv->RPM<unsigned long long>(fNamePtr + 8 * unsigned long long(ID % g_Chunksize));
 		char *name;
-		name = (char *)calloc(256, 1);
+		name = (char *)malloc(256);
+		if (!name) throw "variable initialization failed in function [GetGNameById]";
 		drv->RPM(fName + 0x10, name, 256);
+		if (!name) return "";
 		string ret = string(name);
 		free(name);
-		name = 0;
+		name = nullptr;
 		return ret;
 	}
 
