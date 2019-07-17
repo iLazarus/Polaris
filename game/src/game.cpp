@@ -74,7 +74,7 @@ void game::ScanOffset()
 	unsigned long long instcall = FindPattern(dump, imagesize, "E8 ? ? ? ? 48 8B C8 33 D2 E8 ? ? ? ? 48 ? ? 48 ? ? 0F");
 	unsigned int instcalloffset = (unsigned int)(instcall + *(unsigned long*)(dump + instcall + 1) + 5);
 	printf("0x%-12X Inst Call\n", instcalloffset);
-	g_offset_inst = *(unsigned int*)(dump + instcalloffset + FindPattern(dump + instcalloffset, 100, "48 8b 88 ? ? ? ?") + 3);
+	g_offset_inst = *(unsigned char*)(dump + instcalloffset + FindPattern(dump + instcalloffset, 100, "48 8b 48 ?") + 3);
 	printf("0x%-12X Inst\n", g_offset_inst);
 
 	// level actors
@@ -82,9 +82,9 @@ void game::ScanOffset()
 	unsigned int levelcalloffset = (unsigned int)(levelcall + *(unsigned long*)(dump + levelcall + 1) + 5);
 	printf("0x%-12X Level Call\n", levelcalloffset);
 	printf("0x%-12X Actors Call\n", levelcalloffset);
-	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b ? ? ? ? ?") + 3);
+	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 91 ? ? ? ?") + 3);
 	printf("0x%-12X Level\n", g_offset_level);
-	g_offset_actors = *(unsigned char*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 45 ? 48") + 3);
+	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 95 ? ? ? ?") + 3);
 	printf("0x%-12X Actors\n", g_offset_actors);
 
 
