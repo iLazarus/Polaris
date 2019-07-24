@@ -81,12 +81,12 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\pattern\src;$(ProjectDir)..\driver\src;$(ProjectDir)..\asmdecrypt\src;$(ProjectDir)..\graphics\src;$(ProjectDir)..\graphics\include;$(ProjectDir)..\game\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\pattern\src;$(ProjectDir)..\asmdecrypt\src;$(ProjectDir)..\driver\src;$(ProjectDir)..\graphics\src;$(ProjectDir)..\graphics\include;$(ProjectDir)..\game\src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(OutDir);$(ProjectDir)..\graphics\lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(ProjectDir)../graphics/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ws2_32.lib;asmdecrypt.lib;driver.lib;game.lib;graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -104,11 +104,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\pattern\src;$(ProjectDir)..\driver\src;$(ProjectDir)..\asmdecrypt\src;$(ProjectDir)..\graphics\src;$(ProjectDir)..\graphics\include;$(ProjectDir)..\game\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\pattern\src;$(ProjectDir)..\asmdecrypt\src;$(ProjectDir)..\driver\src;$(ProjectDir)..\graphics\src;$(ProjectDir)..\graphics\include;$(ProjectDir)..\game\src</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(OutDir);$(ProjectDir)..\graphics\lib;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(ProjectDir)../graphics/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ws2_32.lib;asmdecrypt.lib;driver.lib;game.lib;graphics.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

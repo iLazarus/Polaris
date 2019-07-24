@@ -1,4 +1,6 @@
 #pragma once
+#pragma warning(disable : 4996)
+
 #ifndef GAME_H
 #define GAME_H
 
@@ -318,6 +320,7 @@ private:
 		unsigned long long maxval = minval + 0xFFFFFF;
 		for (unsigned long long i = minval; i < maxval; i++)
 		{
+		
 			gnames = (i << 8) + 0x10;
 			g_GNames = gnames;
 			found = (!strcmp(GetGNameById(1).c_str(), "ByteProperty")
@@ -333,12 +336,15 @@ private:
 			if (found) break;
 		}
 		printf("0x%-12IX %s\n", gnames, found ? "GNames Pointer Found [!]" : "GNames Pointer Miss [X]");
-
 		if (found)
 		{
 			g_GNames = gnames;
 			printf("[!] Start In The Cache\n");
 			CachedNames.clear();
+
+			fclose(stdout);
+			freopen("names.txt", "w", stdout);
+
 			for (int i = 0; i < 240000; i++)
 			{
 				string name = GetGNameById(i);
@@ -687,7 +693,11 @@ private:
 					name = "ÐÅºÅÇ¹";
 				}
 				CachedNames.push_back(name);
+
+				printf("%-10d %s\n", i, name.c_str());
 			}
+			fclose(stdout);
+			freopen("CON", "w", stdout);
 			printf("[!] Cached Complete\n");
 		}
 		else
@@ -695,6 +705,8 @@ private:
 			gnames = 0;
 			g_GNames = 0;
 		}
+
+		
 		return gnames;
 	}
 
@@ -842,6 +854,7 @@ private:
 
 	unsigned long long g_GNames = 0;
 	unsigned long long g_Chunksize = 0;
+	unsigned long long g_GObjects = 0;
 	unsigned long long g_UWorld = 0;
 	unsigned long long g_UInst = 0;
 	unsigned long long g_ULevel = 0;

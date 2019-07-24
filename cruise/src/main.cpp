@@ -1,4 +1,4 @@
-//#include "libgo.h"
+#include "libgo.h"
 #include "main.h"
 #include <thread>
 

@@ -1,9 +1,6 @@
 ﻿#include "game.h"
 #pragma warning(disable : 4996)
 
-
-
-
 game::game()
 {
 }
@@ -74,7 +71,7 @@ void game::ScanOffset()
 	unsigned long long instcall = FindPattern(dump, imagesize, "E8 ? ? ? ? 48 8B C8 33 D2 E8 ? ? ? ? 48 ? ? 48 ? ? 0F");
 	unsigned int instcalloffset = (unsigned int)(instcall + *(unsigned long*)(dump + instcall + 1) + 5);
 	printf("0x%-12X Inst Call\n", instcalloffset);
-	g_offset_inst = *(unsigned char*)(dump + instcalloffset + FindPattern(dump + instcalloffset, 100, "48 8b 48 ?") + 3);
+	g_offset_inst = *(unsigned int*)(dump + instcalloffset + FindPattern(dump + instcalloffset, 100, "48 8b ? ? ? ? ? 75 ?") + 3);
 	printf("0x%-12X Inst\n", g_offset_inst);
 
 	// level actors
@@ -84,7 +81,7 @@ void game::ScanOffset()
 	printf("0x%-12X Actors Call\n", levelcalloffset);
 	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 91 ? ? ? ?") + 3);
 	printf("0x%-12X Level\n", g_offset_level);
-	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 95 ? ? ? ?") + 3);
+	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 85 ? ? ? ?") + 3);
 	printf("0x%-12X Actors\n", g_offset_actors);
 
 
@@ -93,7 +90,7 @@ void game::ScanOffset()
 	unsigned int localcalloffset = (unsigned int)(localcall + *(unsigned long*)(dump + localcall + 1) + 5);
 	printf("0x%-12X Local Call\n", localcalloffset);
 	printf("0x%-12X Controller Call\n", localcalloffset);
-	g_offset_local = *(unsigned char*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 100, "48 8B 59 ?") + 3);
+	g_offset_local = *(unsigned int*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 100, "48 8B 99 ? ? ? ?") + 3);
 	printf("0x%-12X Local\n", g_offset_local);
 	g_offset_controler = *(unsigned char*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 300, "48 8b ? ? 4d") + 3);
 	printf("0x%-12X Controller\n", g_offset_controler);
@@ -124,8 +121,8 @@ void game::ScanOffset()
 	g_offset_playercamermgr = *(unsigned int*)(dump + pcmprefix + 10);
 	printf("0x%-12X PlayerCameraManager\n", g_offset_playercamermgr);
 
-	// self
-	unsigned long long pawnprefix = FindPattern(dump, imagesize, "BF ? ? ? ? 89 3D ? ? ? ? ? ? ? ? ? ? ? 48 83 3D ? ? ? ? ?");
+	// self 48 89 5C 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 D9 48 81 EC 90 ? ? ? 48
+	unsigned long long pawnprefix = FindPattern(dump, imagesize, "BB ? ? ? ? 89 1D ? ? ? ? ? ? ? ? ? ? ? 48 83 3D ? ? ? ? ?");
 	g_offset_defaultpawn = *(unsigned int*)(dump + pawnprefix + 14);
 	printf("0x%-12X Self\n", g_offset_defaultpawn);
 
@@ -183,15 +180,25 @@ void game::ScanOffset()
 
 	// gname
 	g_GNames = ScanGNames(g_offset_gname);
-
-
-
-
-
+	
 }
 
 void game::RefreshOffset()
 {
+
+	/*
+	E8 ? ? ? ? E8 ? ? ? ?  E8 ? ? ? ? ? ? ? ? ? ? 48 8d ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? E8
+	C1 E2 10 81 F2 ? ? ? ? 33 D3 89 17 E8  
+	*/
+	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69C5D88  + 0x10));
+	printf("0x%-12IX GObjects\n", g_GObjects);
+
+	for (size_t i = 0; i < 100; i++)
+	{
+		int id = decrypt_objectid(drv->RPM<unsigned long long>(drv->RPM<unsigned long long>(g_GObjects + 0x18 * i) + g_offset_id));
+		printf("%s\n", GetGNameById(id).c_str());
+	}
+
 	g_UWorld = decrypt_uworld(drv->RPM<unsigned long long>(drv->GetGameModule() + g_offset_uworld));
 	printf("0x%-12IX UWorld\n", g_UWorld);
 	g_UInst = decrypt_gameinst(drv->RPM<unsigned long long>(g_UWorld + g_offset_inst));
