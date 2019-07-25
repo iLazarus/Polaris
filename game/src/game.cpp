@@ -192,7 +192,7 @@ void game::RefreshOffset()
 	E8 ? ? ? ? E8 ? ? ? ?  E8 ? ? ? ? ? ? ? ? ? ? 48 8d ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? E8
 	C1 E2 10 81 F2 ? ? ? ? 33 D3 89 17 E8  
 	*/
-	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69C5D88  + 0x10));
+	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69848F8  + 0x10));
 	printf("0x%-12IX GObjects\n", g_GObjects);
 
 	//for (size_t i = 0; i < 100; i++)

@@ -10,12 +10,18 @@ decrypt_gobjects PROC
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;
 	mov rdx,rcx
-	lea eax,[rdx+36769EEAh]
+	lea eax,[rdx+1E3303BDh]
 	shr rdx,20h
-	xor eax,36769EEAh
-	add edx,35A9352Ah
+	sub edx,7C9D3918h
+	rol eax,10h
+	ror edx,08h
+	add eax,328C78F4h
+	add edx,1739BF7Fh
+	rol eax,10h
+	ror edx,08h
+	xor eax,79597537h
+	xor edx,07290769h
 	mov [rsp],eax
-	xor edx,0CA56CAD6h
 	mov [rsp+4h],edx
 	mov rax,[rsp]
 	;;;;;;;;;;;;;;;;;;;	
