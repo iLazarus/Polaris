@@ -300,9 +300,9 @@ private:
 		unsigned long long fNamePtr = drv->RPM<unsigned long long>(g_GNames + unsigned long long(ID / g_Chunksize) * 8);
 		unsigned long long fName = drv->RPM<unsigned long long>(fNamePtr + 8 * unsigned long long(ID % g_Chunksize));
 		char *name;
-		name = (char *)malloc(256);
+		name = (char *)malloc(512);
 		if (!name) throw "variable initialization failed in function [GetGNameById]";
-		drv->RPM(fName + 0x10, name, 256);
+		drv->RPM(fName + 0x10, name, 512);
 		if (!name) return "";
 		string ret = string(name);
 		free(name);

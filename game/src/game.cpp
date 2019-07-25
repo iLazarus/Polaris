@@ -79,9 +79,9 @@ void game::ScanOffset()
 	unsigned int levelcalloffset = (unsigned int)(levelcall + *(unsigned long*)(dump + levelcall + 1) + 5);
 	printf("0x%-12X Level Call\n", levelcalloffset);
 	printf("0x%-12X Actors Call\n", levelcalloffset);
-	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 91 ? ? ? ?") + 3);
+	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 81 ? ? ? ?") + 3);
 	printf("0x%-12X Level\n", g_offset_level);
-	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 85 ? ? ? ?") + 3);
+	g_offset_actors = *(unsigned char*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 45 ? ? ? ?") + 3);
 	printf("0x%-12X Actors\n", g_offset_actors);
 
 
@@ -122,7 +122,9 @@ void game::ScanOffset()
 	printf("0x%-12X PlayerCameraManager\n", g_offset_playercamermgr);
 
 	// self 48 89 5C 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 D9 48 81 EC 90 ? ? ? 48
-	unsigned long long pawnprefix = FindPattern(dump, imagesize, "BB ? ? ? ? 89 1D ? ? ? ? ? ? ? ? ? ? ? 48 83 3D ? ? ? ? ?");
+	//unsigned long long selfcall = FindPattern(dump, imagesize, "48 89 5C 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 D9 48 81 EC 90 ? ? ? 48") + 5;
+	//unsigned int selfcalloffset = (unsigned int)(localcall + *(unsigned long*)(dump + selfcall + 1) + 5);
+	unsigned long long pawnprefix = FindPattern(dump, imagesize, "BF ? ? ? ? 89 3D ? ? ? ? 48 8B 8E ? ? ? ? 48 83 3D ? ? ? ? ?");
 	g_offset_defaultpawn = *(unsigned int*)(dump + pawnprefix + 14);
 	printf("0x%-12X Self\n", g_offset_defaultpawn);
 
@@ -193,11 +195,12 @@ void game::RefreshOffset()
 	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69C5D88  + 0x10));
 	printf("0x%-12IX GObjects\n", g_GObjects);
 
-	for (size_t i = 0; i < 100; i++)
-	{
-		int id = decrypt_objectid(drv->RPM<unsigned long long>(drv->RPM<unsigned long long>(g_GObjects + 0x18 * i) + g_offset_id));
-		printf("%s\n", GetGNameById(id).c_str());
-	}
+	//for (size_t i = 0; i < 100; i++)
+	//{
+	//	int enid = drv->RPM<unsigned long long>(drv->RPM<unsigned long long>(g_GObjects + 0x18 * i) + g_offset_id);
+	//	int id = decrypt_objectid(enid);
+	//	printf("%d %d %s\n", enid, id, GetGNameById(id).c_str());
+	//}
 
 	g_UWorld = decrypt_uworld(drv->RPM<unsigned long long>(drv->GetGameModule() + g_offset_uworld));
 	printf("0x%-12IX UWorld\n", g_UWorld);
