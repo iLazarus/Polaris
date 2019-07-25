@@ -81,14 +81,14 @@
       <SDLCheck>
       </SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)../pattern/src;$(ProjectDir)../driver/src;$(ProjectDir)../libgo/libgo;$(ProjectDir)../libgo/libgo/netio/windows;$(ProjectDir)../asmdecrypt/src;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)../pattern/src;$(ProjectDir)../driver/src;$(ProjectDir)../asmdecrypt/src</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;asmdecrypt.lib;libgo.lib;pattern.lib;driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;asmdecrypt.lib;pattern.lib;driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -106,11 +106,11 @@
       <SDLCheck>
       </SDLCheck>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)../pattern/src;$(ProjectDir)../driver/src;$(ProjectDir)../libgo/libgo;$(ProjectDir)../libgo/libgo/netio/windows;$(ProjectDir)../asmdecrypt/src;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)../pattern/src;$(ProjectDir)../driver/src;$(ProjectDir)../asmdecrypt/src</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(OutDir)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;asmdecrypt.lib;libgo.lib;pattern.lib;driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;asmdecrypt.lib;pattern.lib;driver.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

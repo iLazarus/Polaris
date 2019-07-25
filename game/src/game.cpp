@@ -231,18 +231,18 @@ void game::RefreshOffset()
 	{
 		unsigned long long targ = g_UPlayerCameraManager + i + 0x0;
 
-		if (drv->RPM<float>(targ) == -8538.408203f)
+		if (drv->RPM<float>(targ) == -9428.892578f)
 		{
-			if (drv->RPM<float>((targ + 0x4)) == 5106.546387f)
+			if (drv->RPM<float>((targ + 0x4)) == 3444.159424f)
 			{
-				if (drv->RPM<float>((targ + 0x8)) == 6337.366211f)
+				if (drv->RPM<float>((targ + 0x8)) == 6187.039551f)
 				{
 					printf("%X\t%s\r\n", i, "Location");
 				}
 			}
 		}
 
-		if (drv->RPM<float>(targ) == 60.00000f)
+		if (drv->RPM<float>(targ) == 55.00000f)
 		{
 			printf("%X\t%s\r\n", i, "Fov");
 		}
