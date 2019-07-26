@@ -2,10 +2,10 @@
 Game Hack Tool 
 
 * asmdecrypt
-> VS Project 调用ASM 
+> asm decypt project 
 
 * driver 
-> 驱动操作 
+> kernel driver  wrapper 
 
 * graphics            
 > DX9 
@@ -14,4 +14,10 @@ Game Hack Tool
 > AoB Scan 
 
 * libgo
-> 协程库 
+> go style c++ coroutine 
+
+* sentry
+> tool chian 
+
+ * cruise
+> tool chian for scan offset 
