@@ -1,5 +1,6 @@
 #pragma once
 
+extern "C" unsigned long long decrypt_outer(unsigned long long outer_encrypted);
 extern "C" unsigned long long decrypt_gobjects(unsigned long long gobjects_encrypted);
 extern "C" unsigned long long decrypt_uworld(unsigned long long uworld_encrypted);
 extern "C" unsigned long long decrypt_gameinst(unsigned long long gameinst_encrypt);

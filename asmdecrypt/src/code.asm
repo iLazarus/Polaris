@@ -1,5 +1,27 @@
 .CODE
 
+decrypt_outer PROC
+	cmp rcx, 0h
+	jz decrypt_failure
+	PUSH RBP
+	PUSH RBX
+	MOV RBP, RSP
+	SUB RSP, 8H
+	;;;;;;;;;;;;;;;;;;;
+	mov rdx, 9857195E75D9C1EAh
+	xor rcx,rdx
+	rol rcx,12h
+	mov rax,rcx
+	shl rax,20h
+	mov rdx, 18296CAD5F8FB73Ch
+	xor rax,rdx
+	xor rax,rcx
+	;;;;;;;;;;;;;;;;;;;	
+	MOV RSP, RBP
+	POP RBX
+	POP RBP
+	RET
+decrypt_outer ENDP
 
 decrypt_gobjects PROC
 	cmp rcx, 0h
