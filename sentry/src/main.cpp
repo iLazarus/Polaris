@@ -19,18 +19,16 @@ int main()
 	//GlobalObjects = reinterpret_cast<decltype(GlobalObjects)>(gobject);
 
 
+	while (true)
+	{
+		cout << "Input Pointer which your want decrypt[call de_id()]: ";
+		uint64_t encrypt_obj = 0;
+		cin >> dec >> encrypt_obj;
+		if (encrypt_obj == 0) break;
+		uint64_t decrypt_obj = decrypt_objectid(encrypt_obj);
+		cout << "decrypt!==>" << dec << decrypt_obj << endl;
+	}
 
-	cout << "Input Object Pointer which your want decrypt: ";
-	uint64_t encrypt_obj = 0;
-	cin >> hex >> encrypt_obj;
-	
-	uint64_t decrypt_obj = decrypt_gobjects(encrypt_obj);
-	cout << "decrypt!==>" << hex << decrypt_obj << endl;
 
-
-
-
-
-	system("pause");
 	return 0;
 }
