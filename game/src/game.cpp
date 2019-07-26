@@ -188,24 +188,70 @@ void game::ScanOffset()
 void game::RefreshOffset()
 {
 
+	/* Outer
+	E8 ? ? ? ? 45 0F B6 45 ? 48 8D 55 DF
+	*/
+
+
+
 	/*
 	E8 ? ? ? ? E8 ? ? ? ?  E8 ? ? ? ? ? ? ? ? ? ? 48 8d ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? E8
 	C1 E2 10 81 F2 ? ? ? ? 33 D3 89 17 E8  
 	*/
 	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x6960388  + 0x10));
 	printf("0x%-12IX GObjects\n", g_GObjects);
-
 	fclose(stdout);
-	freopen("object.txt", "w", stdout);
-	for (size_t i = 0; i < 1500; i++)
+	freopen("obj_scan.txt", "w", stdout);
+	//0x166848
+	int i = 0;
+	unsigned long long obj = 0;
+	int id = 0;
+	do
 	{
-		unsigned long long ptr = drv->RPM<unsigned long long>(g_GObjects + 0x18 * i);
-		unsigned long long enid = drv->RPM<unsigned long long>(ptr + g_offset_id);
-		int id = decrypt_objectid(enid);
-		printf("0x%-12IX %-12d %-10d %s\n", ptr, enid, id, GetGNameById(id).c_str());
-	}
+		string name = string("");
+		obj = drv->RPM<unsigned long long>(g_GObjects + 0x18 * i);
+		id = decrypt_objectid(drv->RPM<unsigned long long>(obj + g_offset_id));
+		name.append(GetGNameById(id));
+		int pos = name.rfind('/');
+		if (pos != string::npos) name = string(name.substr(pos + 1, string::npos));
+		reverse(name.begin(), name.end());
+		unsigned long long parent = drv->RPM<unsigned long long>(obj + 0x8);
+		while (decrypt_outer(parent))
+		{
+			id = decrypt_objectid(drv->RPM<unsigned long long>(decrypt_outer(parent) + g_offset_id));
+			string tmp = GetGNameById(id);
+			pos = tmp.rfind('/');
+			if (pos != string::npos) tmp = string(tmp.substr(pos + 1, string::npos));
+			reverse(tmp.begin(), tmp.end());
+			name.append("::").append(tmp);
+			parent = drv->RPM<unsigned long long>(parent + 0x8);
+			if (!parent) break;
+		}
+		if (obj)
+		{
+			reverse(name.begin(), name.end());
+
+			
+			printf("[ %0.6d ] \t [0x%0.6x] \t 0x%-11IX \t %0.6d \t %s\n", i, drv->RPM<unsigned int>(obj + 0x58), obj, decrypt_objectid(drv->RPM<unsigned long long>(obj + g_offset_id)), name.c_str());
+		}
+		
+		i++;
+	} 
+	while (obj);
 	fclose(stdout);
 	freopen("CON", "w", stdout);
+
+	//fclose(stdout);
+	//freopen("object.txt", "w", stdout);
+	//for (size_t i = 0; i < 100; i++)
+	//{
+	//	unsigned long long ptr = drv->RPM<unsigned long long>(g_GObjects + 0x18 * i);
+	//	unsigned long long enid = drv->RPM<unsigned long long>(ptr + g_offset_id);
+	//	int id = decrypt_objectid(enid);
+	//	printf("0x%-12IX %-12d %-10d %s\n", ptr, enid, id, GetGNameById(id).c_str());
+	//}
+	//fclose(stdout);
+	//freopen("CON", "w", stdout);
 
 	g_UWorld = decrypt_uworld(drv->RPM<unsigned long long>(drv->GetGameModule() + g_offset_uworld));
 	printf("0x%-12IX UWorld\n", g_UWorld);

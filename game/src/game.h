@@ -694,7 +694,7 @@ private:
 				}
 				CachedNames.push_back(name);
 
-				printf("%-10d %s\n", i, name.c_str());
+				printf("%-0.6d \t %s\n", i, name.c_str());
 			}
 			fclose(stdout);
 			freopen("CON", "w", stdout);
