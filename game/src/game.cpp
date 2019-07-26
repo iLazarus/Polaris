@@ -195,12 +195,17 @@ void game::RefreshOffset()
 	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69848F8  + 0x10));
 	printf("0x%-12IX GObjects\n", g_GObjects);
 
-	//for (size_t i = 0; i < 100; i++)
-	//{
-	//	int enid = drv->RPM<unsigned long long>(drv->RPM<unsigned long long>(g_GObjects + 0x18 * i) + g_offset_id);
-	//	int id = decrypt_objectid(enid);
-	//	printf("%d %d %s\n", enid, id, GetGNameById(id).c_str());
-	//}
+	fclose(stdout);
+	freopen("object.txt", "w", stdout);
+	for (size_t i = 0; i < 1500; i++)
+	{
+		unsigned long long ptr = drv->RPM<unsigned long long>(g_GObjects + 0x18 * i);
+		unsigned long long enid = drv->RPM<unsigned long long>(ptr + g_offset_id);
+		int id = decrypt_objectid(enid);
+		printf("0x%-12IX %-12d %-10d %s\n", ptr, enid, id, GetGNameById(id).c_str());
+	}
+	fclose(stdout);
+	freopen("CON", "w", stdout);
 
 	g_UWorld = decrypt_uworld(drv->RPM<unsigned long long>(drv->GetGameModule() + g_offset_uworld));
 	printf("0x%-12IX UWorld\n", g_UWorld);
