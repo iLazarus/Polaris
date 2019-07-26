@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 //#include "ObjectStores.h"
@@ -18,15 +19,22 @@ int main()
 
 	//GlobalObjects = reinterpret_cast<decltype(GlobalObjects)>(gobject);
 
+	string str = string("/Script/CoreUObject/");
+	int pos = str.rfind('?');
+	printf("pos = %d\n", pos);
+	if (pos == string::npos)
+	{
+		printf("string::npos = %d\n", pos);
+	}
 
 	while (true)
 	{
-		cout << "Input Pointer which your want decrypt[call de_id()]: ";
+		cout << "Input Pointer which your want decrypt[call outer dec()]: ";
 		uint64_t encrypt_obj = 0;
 		cin >> dec >> encrypt_obj;
 		if (encrypt_obj == 0) break;
-		uint64_t decrypt_obj = decrypt_objectid(encrypt_obj);
-		cout << "decrypt!==>" << dec << decrypt_obj << endl;
+		uint64_t decrypt_obj = decrypt_outer(encrypt_obj);
+		cout << "decrypt!  0x" << hex << decrypt_obj << "   "<< dec << decrypt_obj << endl;
 	}
 
 
