@@ -200,6 +200,8 @@ void game::RefreshOffset()
 	*/
 	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x6960388  + 0x10));
 	printf("0x%-12IX GObjects\n", g_GObjects);
+	printf("[!] Scan Object Array\n");
+
 	fclose(stdout);
 	freopen("obj_scan.txt", "w", stdout);
 	//0x166848
@@ -215,16 +217,16 @@ void game::RefreshOffset()
 		int pos = name.rfind('/');
 		if (pos != string::npos) name = string(name.substr(pos + 1, string::npos));
 		reverse(name.begin(), name.end());
-		unsigned long long parent = drv->RPM<unsigned long long>(obj + 0x8);
-		while (decrypt_outer(parent))
+		unsigned long long parent = decrypt_outer(drv->RPM<unsigned long long>(obj + 0x8));
+		while (parent)
 		{
-			id = decrypt_objectid(drv->RPM<unsigned long long>(decrypt_outer(parent) + g_offset_id));
+			id = decrypt_objectid(drv->RPM<unsigned long long>(parent + g_offset_id));
 			string tmp = GetGNameById(id);
 			pos = tmp.rfind('/');
 			if (pos != string::npos) tmp = string(tmp.substr(pos + 1, string::npos));
 			reverse(tmp.begin(), tmp.end());
 			name.append("::").append(tmp);
-			parent = drv->RPM<unsigned long long>(parent + 0x8);
+			parent = decrypt_outer(drv->RPM<unsigned long long>(parent + 0x8));
 			if (!parent) break;
 		}
 		if (obj)
@@ -240,7 +242,7 @@ void game::RefreshOffset()
 	while (obj);
 	fclose(stdout);
 	freopen("CON", "w", stdout);
-
+	printf("[!] Scan Object Array Completed [%d]\n", i );
 	//fclose(stdout);
 	//freopen("object.txt", "w", stdout);
 	//for (size_t i = 0; i < 100; i++)
