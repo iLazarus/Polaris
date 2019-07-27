@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.705
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pattern", "pattern\Pattern.vcxproj", "{B261CDCC-615A-44CB-BB9D-2386C0CF9B94}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pattern", "pattern\pattern.vcxproj", "{B261CDCC-615A-44CB-BB9D-2386C0CF9B94}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "driver", "driver\driver.vcxproj", "{000621A9-941E-4BCA-9A92-F9436FC57775}"
 EndProject

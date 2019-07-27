@@ -31,9 +31,9 @@ int main()
 	{
 		cout << "Input Pointer which your want decrypt[call outer dec()]: ";
 		uint64_t encrypt_obj = 0;
-		cin >> dec >> encrypt_obj;
+		cin >> hex >> encrypt_obj;
 		if (encrypt_obj == 0) break;
-		uint64_t decrypt_obj = decrypt_outer(encrypt_obj);
+		uint64_t decrypt_obj = decrypt_gobjects(encrypt_obj);
 		cout << "decrypt!  0x" << hex << decrypt_obj << "   "<< dec << decrypt_obj << endl;
 	}
 
