@@ -40,6 +40,13 @@ int main()
 		decrypt_obj = decrypt_outer(encrypt_obj);
 		cout << "decrypt outer!  0x" << hex << decrypt_obj << "   "<< dec << decrypt_obj << endl;
 
+		cout << "class: ";
+		cin >> dec >> encrypt_obj;
+		if (encrypt_obj == 0) break;
+		decrypt_obj = decrypt_class(encrypt_obj);
+		cout << "decrypt number!  0x" << hex << decrypt_obj << "   " << dec << decrypt_obj << endl;
+
+
 		///////////////
 		cout << "id: ";
 		cin >> dec >> encrypt_obj;
