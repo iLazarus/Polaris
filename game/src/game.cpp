@@ -79,9 +79,9 @@ void game::ScanOffset()
 	unsigned int levelcalloffset = (unsigned int)(levelcall + *(unsigned long*)(dump + levelcall + 1) + 5);
 	printf("0x%-12X Level Call\n", levelcalloffset);
 	printf("0x%-12X Actors Call\n", levelcalloffset);
-	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 91 ? ? ? ?") + 3);
+	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 81 ? ? ? ?") + 3);
 	printf("0x%-12X Level\n", g_offset_level);
-	g_offset_actors = *(unsigned char*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 45 ?") + 3);
+	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 85 ?") + 3);
 	printf("0x%-12X Actors\n", g_offset_actors);
 
 
@@ -198,7 +198,7 @@ void game::RefreshOffset()
 	E8 ? ? ? ? E8 ? ? ? ?  E8 ? ? ? ? ? ? ? ? ? ? 48 8d ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? E8
 	C1 E2 10 81 F2 ? ? ? ? 33 D3 89 17 E8  
 	*/
-	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x6DE4998	  + 0x10));
+	g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x6DDFDA8 + 0x10));
 	printf("0x%-12IX GObjects\n", g_GObjects);
 	printf("[!] Scan Object Array\n");
 
@@ -217,7 +217,7 @@ void game::RefreshOffset()
 		size_t pos = name.rfind('/');
 		if (pos != string::npos) name = string(name.substr(pos + 1, string::npos));
 		reverse(name.begin(), name.end());
-		unsigned long long parent = decrypt_outer(drv->RPM<unsigned long long>(obj + 0x10));
+		unsigned long long parent = decrypt_outer(drv->RPM<unsigned long long>(obj + 0x8));
 		while (parent)
 		{
 			id = decrypt_objectid(drv->RPM<unsigned long long>(parent + g_offset_id));
@@ -226,16 +226,16 @@ void game::RefreshOffset()
 			if (pos != string::npos) tmp = string(tmp.substr(pos + 1, string::npos));
 			reverse(tmp.begin(), tmp.end());
 			name.append("::").append(tmp);
-			parent = decrypt_outer(drv->RPM<unsigned long long>(parent + 0x10));
+			parent = decrypt_outer(drv->RPM<unsigned long long>(parent + 0x8));
 			if (!parent) break;
 		}
 		if (obj)
 		{
 
 			reverse(name.begin(), name.end());
-			unsigned long long classPtr = decrypt_class(drv->RPM<unsigned long long>(obj + 0x18));
+			unsigned long long classPtr = decrypt_class(drv->RPM<unsigned long long>(obj + 0x20));
 			name.append("\t").append(GetGNameById(decrypt_objectid(drv->RPM<unsigned long long>(classPtr + g_offset_id))));
-			printf("[ %0.6d ] \t [0x%0.6x] \t 0x%-11IX \t %0.6d \t %s\n", i, drv->RPM<unsigned int>(obj + 0x58), obj, decrypt_objectid(drv->RPM<unsigned long long>(obj + g_offset_id)), name.c_str());
+			printf("[ %0.6d ] \t [0x%0.6x] \t 0x%-11IX \t %0.6d \t %s\n", i, drv->RPM<unsigned int>(obj + 0x50), obj, decrypt_objectid(drv->RPM<unsigned long long>(obj + g_offset_id)), name.c_str());
 		}
 		
 		i++;
@@ -337,7 +337,7 @@ void game::FilterActors()
 	unsigned long long actors = drv->RPM<unsigned long long>(aactor_ptr);
 	if (!actors) return;
 
-	drv->RPM(g_UPlayerCameraManager + CAMERACACHE - 0x10, &FCameraCache, sizeof(FCameraCacheEntry));
+	drv->RPM(g_UPlayerCameraManager + CAMERACACHE, &FCameraCache, sizeof(FCameraCacheEntry));
 
 	for (int i = 0; i < entitycount; i++)
 	{

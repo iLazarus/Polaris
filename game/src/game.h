@@ -27,22 +27,37 @@
 #define HEIGHT GetSystemMetrics(SM_CYSCREEN)
 #define AIMLIMITEDSIZE						80000
 
-#define CAMERACACHE							0x152C
-#define TEAM								0x1488
-#define LASTRENDERONSCREEN					0x748
 
-#define VEHICLERIDERCOMPONENT				0x1720
+
+//Engine::PlayerCameraManager::CameraCache
+#define CAMERACACHE							0x480
+//TslGame::TslCharacter::Team
+#define TEAM								0xD90
+//Engine::PrimitiveComponent::LastRenderTimeOnScreen
+#define LASTRENDERONSCREEN					0x758
+//TslGame::TslCharacter::VehicleRiderComponent
+#define VEHICLERIDERCOMPONENT				0x1740
+//TslGame::VehicleRiderComponent::SeatIndex
 #define SEATINDEX							0x1E8
-#define COMPONENTVELOCITY					0x354
+//Engine::SceneComponent::ComponentVelocity
+#define COMPONENTVELOCITY					0x360
+//TslGame::VehicleRiderComponent::LastVehiclePawn
 #define LASTVEHICLEPAWN						0x220
-#define REPLICATEDMOVEMENT					0xD0
-#define ANIMSCRIPTINSTANCE					0xBA8
+//Engine::Actor::ReplicatedMovement
+#define REPLICATEDMOVEMENT					0x68
+//Engine::SkeletalMeshComponent::AnimScriptInstance
+#define ANIMSCRIPTINSTANCE					0xBB8
+//TslGame::TslAnimInstance::ControlRotation_CP
 #define CONTROLROTATION_CP					0x678
-
-#define WEAPONPROCESSOR						0xC30
+//TslGame::TslCharacter::WeaponProcessor	
+#define WEAPONPROCESSOR						0xD30
+//TslGame::WeaponProcessorComponent::EquippedWeapons
 #define EQUIPPEDWEAPONS						0x290
-#define WEAPONTRAJECTORYDATA				0xD50
+//TslGame::TslWeapon_Trajectory::WeaponTrajectoryData
+#define WEAPONTRAJECTORYDATA				0xDA0
+//TslGame::WeaponTrajectoryData::TrajectoryConfig
 #define TRAJECTORYCONFIG					0xB0
+//TslGame::WeaponTrajectoryConfig::VDragCoefficient
 #define VDRAGCOEFFICIENT					0x20
 
 
@@ -280,11 +295,18 @@ private:
 		// FOV cc cc cc f3 0f 10 ? ? ? ? ? 0f ? ? 0f ? ? 77 08 f3 0f 10 ? ? ? ? ? c3
 		// ROT f2 0f 10 81 ? ? ? ? f2 41 0f 11 ? 8b 81 ? ? ? ? 41 89 ? ? c3
 		// LOT cc f2 0f 10 81 ? ? ? ? f2 0f 11 ? 8b 81 ? ? ? ? 89 42 ? f2
-		float FOV;
-		char pad2[0x4];
+
+
+		//Engine::MinimalViewInfo::Rotation
+		//Engine::MinimalViewInfo::FOV
+		//Engine::MinimalViewInfo::Location
+		
+		char pad[0x560];
 		Vector3 Location;
+		char pad2[0x14];
+		FRotator Rotation;
 		char pad1[0x4];
-		FRotator Rotation;		
+		float FOV;
 	};
 
 	struct FCameraCacheEntry
