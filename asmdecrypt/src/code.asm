@@ -9,12 +9,12 @@ decrypt_class PROC
 	MOV RBP, RSP
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;	
-	mov rax,0FF4CDCD1935B2DD7h
+	mov rax,3F4A1AB0EBE74904h
 	xor rcx,rax
-	rol rcx,0Ch
+	rol rcx,20h
 	mov rax,rcx
 	shl rax,20h
-	mov r8,11B34D11D1DA0E66h
+	mov r8,0AAC0347167E6EEACh
 	xor rax,r8
 	xor rax,rcx
 	;;;;;;;;;;;;;;;;;;;	
@@ -32,12 +32,12 @@ decrypt_outer PROC
 	MOV RBP, RSP
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;
-	mov rdx,415C172E4CA34460h
+	mov rdx,5D9B32870F5D5E8Dh
 	xor rcx,rdx
-	ror rcx,1Ah
+	rol rcx,0Ah
 	mov rax,rcx
 	shl rax,20h
-	mov rdx,448278767E1DA428h
+	mov rdx,0A20B4F0FC5C83682h
 	xor rax,rdx
 	xor rax,rcx
 	;;;;;;;;;;;;;;;;;;;	
@@ -55,16 +55,19 @@ decrypt_gobjects PROC
 	MOV RBP, RSP
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;
-	mov eax,ecx
+	mov rdx,rcx
+	mov eax,edx
 	ror eax,08h
-	sub eax,48280467h
-	shr rcx,20h
+	shr rdx,20h
+	not eax
+	sub eax,3E5E6291h
+	not edx
 	ror eax,08h
-	add ecx,36F83639h
-	xor eax,0B7D7FB99h
-	xor ecx,0C907C9C7h
+	xor eax,3E5E6290h
+	add edx,400E40CFh
+	xor edx,400E40CEh
 	mov [rsp],eax
-	mov [rsp+4h],ecx
+	mov [rsp+4h],edx
 	mov rax,[rsp]
 	;;;;;;;;;;;;;;;;;;;	
 	MOV RSP, RBP
@@ -81,21 +84,46 @@ decrypt_uworld PROC
 	MOV RBP, RSP
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;
-	mov eax,ecx
-	xor eax,29BB03BDh
-	shr rcx,20h
-	ror eax,10h
-	xor ecx,8EEAC6E8h
-	sub eax,3BBBCB04h
-	ror ecx,08h
-	xor eax,0C4BB03BDh
-	sub ecx,3C843C84h
-	ror eax,10h
-	xor ecx,29EAC6E8h
-	xor eax,0C44434FCh
-	ror ecx,08h
-	xor ecx,3C843C84h
-	mov [rsp],eax
+	mov rdx,rcx
+	movzx eax,dx
+	mov ecx,edx
+	mov r9,rdx
+	shr ecx,10h
+	xor ecx,eax
+	shr r9,20h
+	and edx,0FFFF0000h
+	or ecx,edx
+	add ecx,0CE0ED6D2h
+	mov edx,ecx
+	movzx ecx,cx
+	shr edx,10h
+	xor ecx,edx
+	movzx eax,dx
+	ror ax,08h
+	mov edx,r9d
+	shr edx,10h
+	movzx r8d,ax
+	movzx eax,dx
+	ror ax,08h
+	xor dx,r9w
+	ror dx,08h
+	shl r8d,10h
+	or r8d,ecx
+	movzx edx,dx
+	movzx ecx,ax
+	xor r8d,0CE0ED6D2h
+	shl ecx,10h
+	or edx,ecx
+	mov [rsp],r8d
+	add edx,0CD91CD12h
+	mov eax,edx
+	shr eax,10h
+	xor ax,dx
+	and edx,0FFFF0000h
+	ror ax,08h
+	movzx ecx,ax
+	or ecx,edx
+	xor ecx,326E32EEh
 	mov [rsp+4h],ecx
 	mov rax,[rsp]
 	;;;;;;;;;;;;;;;;;;;	
@@ -113,12 +141,17 @@ decrypt_gameinst PROC
 	MOV RBP, RSP
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;;;;;;;
-	lea eax,[rcx-29E941B6h]
-	xor eax,0D616BE4Ah
+	mov eax,ecx
 	shr rcx,20h
-	sub ecx,2AF62A76h
+	not eax
+	rol ecx,08h
+	add eax,31114DFFh
+	not ecx
+	xor eax,0CEEEB200h
+	sub ecx,4F614FA1h
 	mov [rsp],eax
-	xor ecx,2AF62A76h
+	rol ecx,08h
+	xor ecx,0B09EB05Eh
 	mov [rsp+4h],ecx
 	mov rax,[rsp]
 	;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -138,17 +171,17 @@ decrypt_level PROC
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov rax,rcx
 	shr rcx,20h
-	add eax,0E3548A8Fh
-	rol eax,08h
-	sub eax,7E7B81B0h
-	ror eax,10h
-	xor eax,0F2FF3C1h
+	add eax,0BED003BDh
+	rol eax,10h
+	add eax,73C99954h
+	rol eax,10h
+	xor eax,19F99597h
 	mov [rsp],eax
-	lea eax,[rcx+54F5D578h]
-	ror eax,10h
-	add eax,721663D9h
+	lea eax,[rcx+23FFC6E8h]
 	ror eax,08h
-	xor eax,71DF719Fh
+	add eax,57365FDFh
+	ror eax,08h
+	xor eax,67C96709h
 	mov [rsp+4h],eax
 	mov rax,[rsp]
 	;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -167,46 +200,13 @@ decrypt_actors PROC
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov rax,rcx
-	mov r10,rax
-	mov r9,rax
-	shr r10,20h
-	shr r9,20h
-	mov ecx,eax
-	shr r9d,10h
-	shr ecx,10h
-	xor r10w,r9w
-	xor ax,cx
-	ror ax,08h
-	shl ecx,10h
-	movzx eax,ax
-	or eax,ecx
-	ror r9w,08h
-	add eax,4E8E5652h
-	mov ecx,eax
-	shr ecx,10h
-	movzx edx,cx
-	ror cx,08h
-	xor dx,ax
-	movzx r8d,cx
-	shl r8d,10h
-	ror dx,08h
-	movzx eax,dx
-	or r8d,eax
-	movzx ecx,r9w
-	shl ecx,10h
-	xor r8d,4E8E5652h
-	movzx eax,r10w
-	or ecx,eax
-	mov [rsp],r8d
-	add ecx,4D114D92h
-	mov eax,ecx
-	shr eax,10h
-	xor ax,cx
-	and ecx,0FFFF0000h
-	movzx eax,ax
-	or ecx,eax
-	xor ecx,0B2EEB26Eh
-	mov [rsp+4h],ecx
+	shr rcx,20h
+	add eax,7F8F85EEh
+	xor eax,303070D0h
+	mov [rsp],eax
+	lea eax,[rcx+6270DAC0h]
+	xor eax,0D030D030h
+	mov [rsp+4h],eax
 	mov rax,[rsp]
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	MOV RSP, RBP
@@ -225,12 +225,14 @@ decrypt_local PROC
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov eax,ecx
 	ror eax,08h
-	add eax,37577B19h
+	not eax
 	shr rcx,20h
+	add eax,41211DEFh
+	not ecx
 	ror eax,08h
-	sub ecx,49874947h
-	xor eax,37577B19h
-	xor ecx,49874947h
+	sub ecx,3F713FB1h
+	xor eax,0BEDEE210h
+	xor ecx,0C08EC04Eh
 	mov [rsp],eax
 	mov [rsp+4h],ecx
 	mov rax,[rsp]
@@ -249,14 +251,15 @@ decrypt_controller PROC
 	MOV RBP, RSP
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;;;;;;;
-	lea eax,[rcx+2BCB1FE5h]
-	xor eax,2BCB1FE5h
+	lea eax,[rcx-79CA36CBh]
+	xor eax,3595C1BBh
 	shr rcx,20h
-	sub ecx,553B55FBh
+	sub ecx,3025BD95h
 	mov [rsp],eax
-	xor ecx,553B55FBh
+	xor ecx,4B254B65h
 	mov [rsp+4h],ecx
 	mov rax,[rsp]
+
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	MOV RSP, RBP
 	POP RBX
@@ -281,12 +284,12 @@ decrypt_objectid PROC
 	SUB RSP, 8H
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	mov rbx,rcx
-	xor ebx,43718069h
-	rol ebx,02h
+	xor ebx,0DADC8D26h
+	rol ebx,0Eh
 	mov eax,ebx
 	shl eax,10h
 	xor eax,ebx
-	xor eax,0A3997F4Ch
+	xor eax,0E5F9FF4Ah
 	;;;;;;;;;;;;;;;;;;;;;;;;;
 	MOV RSP, RBP
 	POP RBX
