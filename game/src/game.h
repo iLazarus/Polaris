@@ -30,33 +30,33 @@
 
 
 //Engine::PlayerCameraManager::CameraCache
-#define CAMERACACHE							0x480
+#define CAMERACACHE							0x1020
 //TslGame::TslCharacter::Team
-#define TEAM								0xD90
+#define TEAM								0xCE0
 //Engine::PrimitiveComponent::LastRenderTimeOnScreen
 #define LASTRENDERONSCREEN					0x758
 //TslGame::TslCharacter::VehicleRiderComponent
-#define VEHICLERIDERCOMPONENT				0x1740
+#define VEHICLERIDERCOMPONENT				0x16B8
 //TslGame::VehicleRiderComponent::SeatIndex
-#define SEATINDEX							0x1E8
+#define SEATINDEX							0x1F8
 //Engine::SceneComponent::ComponentVelocity
-#define COMPONENTVELOCITY					0x360
+#define COMPONENTVELOCITY					0x354
 //TslGame::VehicleRiderComponent::LastVehiclePawn
-#define LASTVEHICLEPAWN						0x220
+#define LASTVEHICLEPAWN						0x230
 //Engine::Actor::ReplicatedMovement
 #define REPLICATEDMOVEMENT					0x68
 //Engine::SkeletalMeshComponent::AnimScriptInstance
 #define ANIMSCRIPTINSTANCE					0xBB8
 //TslGame::TslAnimInstance::ControlRotation_CP
-#define CONTROLROTATION_CP					0x678
+#define CONTROLROTATION_CP					0x680
 //TslGame::TslCharacter::WeaponProcessor	
-#define WEAPONPROCESSOR						0xD30
+#define WEAPONPROCESSOR						0xC60
 //TslGame::WeaponProcessorComponent::EquippedWeapons
-#define EQUIPPEDWEAPONS						0x290
+#define EQUIPPEDWEAPONS						0x2A0
 //TslGame::TslWeapon_Trajectory::WeaponTrajectoryData
 #define WEAPONTRAJECTORYDATA				0xDA0
 //TslGame::WeaponTrajectoryData::TrajectoryConfig
-#define TRAJECTORYCONFIG					0xB0
+#define TRAJECTORYCONFIG					0xB8
 //TslGame::WeaponTrajectoryConfig::VDragCoefficient
 #define VDRAGCOEFFICIENT					0x20
 
@@ -297,16 +297,17 @@ private:
 		// LOT cc f2 0f 10 81 ? ? ? ? f2 0f 11 ? 8b 81 ? ? ? ? 89 42 ? f2
 
 
-		//Engine::MinimalViewInfo::Rotation
-		//Engine::MinimalViewInfo::FOV
-		//Engine::MinimalViewInfo::Location
+		//Engine::MinimalViewInfo::Rotation  570
+		//Engine::MinimalViewInfo::FOV 4  
+		//Engine::MinimalViewInfo::Location 58C
 		
-		char pad[0x560];
-		Vector3 Location;
-		char pad2[0x14];
-		FRotator Rotation;
-		char pad1[0x4];
+		char pad[0x4];
 		float FOV;
+		char pad2[0x568];
+		FRotator Rotation;
+		char pad1[0x10];
+		Vector3 Location;
+		
 	};
 
 	struct FCameraCacheEntry
