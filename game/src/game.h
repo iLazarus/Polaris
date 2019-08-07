@@ -30,27 +30,27 @@
 
 
 //Engine::PlayerCameraManager::CameraCache
-#define CAMERACACHE							0x1020
+#define CAMERACACHE							0x1680
 //TslGame::TslCharacter::Team
-#define TEAM								0xCE0
+#define TEAM								0xBD0
 //Engine::PrimitiveComponent::LastRenderTimeOnScreen
 #define LASTRENDERONSCREEN					0x758
 //TslGame::TslCharacter::VehicleRiderComponent
-#define VEHICLERIDERCOMPONENT				0x16B8
+#define VEHICLERIDERCOMPONENT				0x16F8
 //TslGame::VehicleRiderComponent::SeatIndex
 #define SEATINDEX							0x1F8
 //Engine::SceneComponent::ComponentVelocity
-#define COMPONENTVELOCITY					0x354
+#define COMPONENTVELOCITY					0x358
 //TslGame::VehicleRiderComponent::LastVehiclePawn
 #define LASTVEHICLEPAWN						0x230
 //Engine::Actor::ReplicatedMovement
-#define REPLICATEDMOVEMENT					0x68
+#define REPLICATEDMOVEMENT					0x80
 //Engine::SkeletalMeshComponent::AnimScriptInstance
 #define ANIMSCRIPTINSTANCE					0xBB8
 //TslGame::TslAnimInstance::ControlRotation_CP
 #define CONTROLROTATION_CP					0x680
 //TslGame::TslCharacter::WeaponProcessor	
-#define WEAPONPROCESSOR						0xC60
+#define WEAPONPROCESSOR						0xC20
 //TslGame::WeaponProcessorComponent::EquippedWeapons
 #define EQUIPPEDWEAPONS						0x2A0
 //TslGame::TslWeapon_Trajectory::WeaponTrajectoryData
@@ -297,17 +297,15 @@ private:
 		// LOT cc f2 0f 10 81 ? ? ? ? f2 0f 11 ? 8b 81 ? ? ? ? 89 42 ? f2
 
 
-		//Engine::MinimalViewInfo::Rotation  570
-		//Engine::MinimalViewInfo::FOV 4  
-		//Engine::MinimalViewInfo::Location 58C
+		//Engine::MinimalViewInfo::Rotation  8
+		//Engine::MinimalViewInfo::FOV 24  
+		//Engine::MinimalViewInfo::Location 18
 		
-		char pad[0x4];
-		float FOV;
-		char pad2[0x568];
+		char pad[0x8];
 		FRotator Rotation;
-		char pad1[0x10];
+		char pad1[0x4];
 		Vector3 Location;
-		
+		float FOV;	
 	};
 
 	struct FCameraCacheEntry
