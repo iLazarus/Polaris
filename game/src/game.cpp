@@ -161,7 +161,7 @@ void game::ScanOffset()
 	unsigned long long rootprefix = FindPattern(dump, imagesize, "83 F8 03 74 08 48 8B CB E8 ? ? ? ? B0 01 48 8B 4D ? 48 33 CC E8");
 	unsigned long long rootaddr = rootprefix + FindPattern(dump + rootprefix, 50, "E8 ? ? ? ?");
 	unsigned int rootcall = (unsigned int)(*(unsigned int*)(dump + rootaddr + 1) + rootaddr + 5);
-	g_offset_root = *(unsigned int*)(dump + rootcall + FindPattern(dump + rootcall, 200, "48 8b ? ? ? ? ? 75 0d") + 3);
+	g_offset_root = *(unsigned int*)(dump + rootcall + FindPattern(dump + rootcall, 200, "48 8b ? ? ? ? ? 75 ?") + 3);
 	printf("0x%-12X RootComponent\n", g_offset_root);
 
 	// BoneArray ComponentToWorld
