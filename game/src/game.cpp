@@ -197,7 +197,7 @@ void game::RefreshOffset()
 	C1 E2 10 81 F2 ? ? ? ? 33 D3 89 17 E8  
 	*/
 
-	if (1)
+	if (0)
 	{
 		g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69ED878 + 0x10));
 		printf("0x%-12IX GObjects\n", g_GObjects);
