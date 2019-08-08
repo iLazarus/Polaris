@@ -79,9 +79,9 @@ void game::ScanOffset()
 	unsigned int levelcalloffset = (unsigned int)(levelcall + *(unsigned long*)(dump + levelcall + 1) + 5);
 	printf("0x%-12X Level Call\n", levelcalloffset);
 	printf("0x%-12X Actors Call\n", levelcalloffset);
-	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 91 ? ? ? ?") + 3);
+	g_offset_level = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 100, "48 8b 81 ? ? ? ?") + 3);
 	printf("0x%-12X Level\n", g_offset_level);
-	g_offset_actors = *(unsigned char*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 45 ?") + 3);
+	g_offset_actors = *(unsigned int*)(dump + levelcalloffset + FindPattern(dump + levelcalloffset, 500, "49 8b 95 ?") + 3);
 	printf("0x%-12X Actors\n", g_offset_actors);
 
 
@@ -90,7 +90,7 @@ void game::ScanOffset()
 	unsigned int localcalloffset = (unsigned int)(localcall + *(unsigned long*)(dump + localcall + 1) + 5);
 	printf("0x%-12X Local Call\n", localcalloffset);
 	printf("0x%-12X Controller Call\n", localcalloffset);
-	g_offset_local = *(unsigned int*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 100, "48 8B 99 ? ? ? ?") + 3);
+	g_offset_local = *(unsigned char*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 100, "48 8B 59 ? ? ? ?") + 3);
 	printf("0x%-12X Local\n", g_offset_local);
 	g_offset_controler = *(unsigned char*)(dump + localcalloffset + FindPattern(dump + localcalloffset, 300, "48 8b ? ? 4d") + 3);
 	printf("0x%-12X Controller\n", g_offset_controler);
@@ -124,7 +124,7 @@ void game::ScanOffset()
 	// self 48 89 5C 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 D9 48 81 EC 90 ? ? ? 48
 	//unsigned long long selfcall = FindPattern(dump, imagesize, "48 89 5C 24 10 48 89 4C 24 08 55 56 57 41 54 41 55 41 56 41 57 48 8D 6C 24 D9 48 81 EC 90 ? ? ? 48") + 5;
 	//unsigned int selfcalloffset = (unsigned int)(localcall + *(unsigned long*)(dump + selfcall + 1) + 5);
-	unsigned long long pawnprefix = FindPattern(dump, imagesize, "BF ? ? ? ? 89 3D ? ? ? ? 4C 8B 8E ? ? ? ? 48 83 3D ? ? ? ? ?");
+	unsigned long long pawnprefix = FindPattern(dump, imagesize, "BF ? ? ? ? 89 3D ? ? ? ? 49 8B 8E ? ? ? ? 48 83 3D ? ? ? ? ?");
 	g_offset_defaultpawn = *(unsigned int*)(dump + pawnprefix + 14);
 	printf("0x%-12X Self\n", g_offset_defaultpawn);
 
@@ -141,7 +141,7 @@ void game::ScanOffset()
 	printf("0x%-12X GroggyHealth\n", g_offset_groggyhealth);
 
 	// DroppedItemArray
-	unsigned long long droppeditemsprefix = FindPattern(dump, imagesize, "44 0F B6 81 ? ? ? ? 41 0F B6 C0 24 01 3A C2 74 13 41 80 E0 FE 44 0A C2 44 88 81 ? ? ? ? E9 ? ? ? ?");
+	unsigned long long droppeditemsprefix = FindPattern(dump, imagesize, "44 0F B6 81 ? ? ? ? 41 0F B6 C0 24 01 3A C2 74 13 41 80 E0 FE 44 0A C2 44 88 81 ? ? ? ? E9 ? ? ? ?", 2);
 	unsigned long long droppeditemsaddr = droppeditemsprefix + FindPattern(dump + droppeditemsprefix, 100, "E9 ? ? ? ?");
 	unsigned int droppeditemscall = (unsigned int)(*(unsigned int*)(dump + droppeditemsaddr + 1) + droppeditemsaddr + 5);
 	g_offset_droppeditems = *(unsigned int*)(dump + droppeditemscall + FindPattern(dump + droppeditemscall, 200, "4c 8d ? ? ? ? ? c7 45 d7") + 3);
@@ -197,9 +197,9 @@ void game::RefreshOffset()
 	C1 E2 10 81 F2 ? ? ? ? 33 D3 89 17 E8  
 	*/
 
-	if (0)
+	if (1)
 	{
-		g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69ED878 + 0x10));
+		g_GObjects = decrypt_gobjects(drv->RPM<unsigned long long>(drv->GetGameModule() + 0x69f7088 + 0x10));
 		printf("0x%-12IX GObjects\n", g_GObjects);
 		printf("[!] Scan Object Array\n");
 
@@ -218,7 +218,7 @@ void game::RefreshOffset()
 			size_t pos = name.rfind('/');
 			if (pos != string::npos) name = string(name.substr(pos + 1, string::npos));
 			reverse(name.begin(), name.end());
-			unsigned long long parent = decrypt_outer(drv->RPM<unsigned long long>(obj + 0x18));
+			unsigned long long parent = decrypt_outer(drv->RPM<unsigned long long>(obj + 0x8));
 			while (parent)
 			{
 				id = decrypt_objectid(drv->RPM<unsigned long long>(parent + g_offset_id));
@@ -227,16 +227,27 @@ void game::RefreshOffset()
 				if (pos != string::npos) tmp = string(tmp.substr(pos + 1, string::npos));
 				reverse(tmp.begin(), tmp.end());
 				name.append("::").append(tmp);
-				parent = decrypt_outer(drv->RPM<unsigned long long>(parent + 0x18));
+				parent = decrypt_outer(drv->RPM<unsigned long long>(parent + 0x8));
 				if (!parent) break;
 			}
 			if (obj)
 			{
 
 				reverse(name.begin(), name.end());
-				unsigned long long classPtr = decrypt_class(drv->RPM<unsigned long long>(obj + 0x28));
-				name.append("\t").append(GetGNameById(decrypt_objectid(drv->RPM<unsigned long long>(classPtr + g_offset_id))));
-				printf("[ %0.6d ] \t [0x%0.6x] \t 0x%-11IX \t %0.6d \t %s\n", i, drv->RPM<unsigned int>(obj + 0x58), obj, decrypt_objectid(drv->RPM<unsigned long long>(obj + g_offset_id)), name.c_str());
+				unsigned long long classPtr = decrypt_class(drv->RPM<unsigned long long>(obj + 0x10));
+				string type = GetGNameById(decrypt_objectid(drv->RPM<unsigned long long>(classPtr + g_offset_id)));
+				name.append("\t").append(type);
+				int offset = 0;
+				if (type == "Function")
+				{
+					offset = 0x118;
+				}
+				else
+				{
+					offset = 0x50;
+				}
+				printf("[ %0.6d ] \t [0x%0.6x] \t 0x%-11IX \t %0.6d \t %s\n", i, drv->RPM<unsigned int>(obj + offset), obj, decrypt_objectid(drv->RPM<unsigned long long>(obj + g_offset_id)), name.c_str());
+				
 			}
 
 			i++;
@@ -269,43 +280,6 @@ void game::RefreshOffset()
 	int entitycount = drv->RPM<unsigned int>(g_AActors + 0x8);
 	printf("%-14d EntityCount\n", entitycount);
 	AimMap.erase(AimMap.begin(), AimMap.end());
-	// F R L
-	
-	/*
-	for (int i = 0; i < 0x2000; i++)
-	{
-		unsigned long long targ = g_UPlayerCameraManager + i + 0x0;
-
-		if (drv->RPM<float>(targ) == -9428.892578f)
-		{
-			if (drv->RPM<float>((targ + 0x4)) == 3444.159424f)
-			{
-				if (drv->RPM<float>((targ + 0x8)) == 6187.039551f)
-				{
-					printf("%X\t%s\r\n", i, "Location");
-				}
-			}
-		}
-
-		if (drv->RPM<float>(targ) == 55.00000f)
-		{
-			printf("%X\t%s\r\n", i, "Fov");
-		}
-
-
-		if (drv->RPM<float>(targ) == -21.43337822f)
-		{
-			if (drv->RPM<float>((targ + 0x4)) == -41.44004059f)
-			{
-				if (drv->RPM<float>((targ + 0x8)) == 9.421803474f)
-				{
-					printf("%X\t%s\r\n", i, "Roator");
-				}
-			}
-		}
-	}
-	printf("[!] F.R.L Scan Complete\n");
-	*/
 	
 }
 
@@ -526,7 +500,11 @@ void game::Fire()
 	unsigned long long root = decrypt_property(drv->RPM<unsigned long long>(g_BestAimActor + g_offset_root));
 	if (!root) return;
 	bool canVisual = drv->RPM<float>(mesh + LASTRENDERONSCREEN) == drv->RPM<float>(g_DefaultMesh + LASTRENDERONSCREEN);
-	if (!canVisual) return;
+	if (!canVisual)
+	{
+		AimMap.clear();
+		return;
+	}
 
 	drv->RPM(g_UPlayerCameraManager + CAMERACACHE, &FCameraCache, sizeof(FCameraCacheEntry));
 	int headId = ((GetAsyncKeyState(VK_RBUTTON) & 0x8000) != 0) ? 5 : 15;
@@ -618,6 +596,11 @@ void game::HotKey()
 	{
 		//DebugOffset();
 	}
+	if (GetAsyncKeyState(LVKF_ALT) & 1)
+	{
+		AimMap.clear();
+	}
+
 }
 
 
