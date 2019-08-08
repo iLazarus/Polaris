@@ -82,7 +82,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLi
 			dx->Begin();
 			hack->FilterActors();
 			dx->End();
-			Sleep(5);
+			Sleep(1);
 		}
 	} }.detach();
 
