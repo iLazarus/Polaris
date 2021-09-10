@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FiLazarus%2FPolaris.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FiLazarus%2FPolaris?ref=badge_shield)
+
 ﻿# Polaris
 Game Hack Tool
 
@@ -24,3 +26,6 @@ Game Hack Tool
 
 * libgo
 > go style c++ coroutine 
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FiLazarus%2FPolaris.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FiLazarus%2FPolaris?ref=badge_large)
